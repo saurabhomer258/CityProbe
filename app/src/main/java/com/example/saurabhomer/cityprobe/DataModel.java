@@ -11,18 +11,24 @@ public class DataModel {
     String Lang;
     String Date;
     String time;
-    String SNo;
+
     String Pm1;
     String Pm25;
+    String CO2;
     String Pm10;
+    String No2;
+    String Co;
+    String humidity;
+    String temperature;
 
-    public DataModel(String current_Date_time, String lat, String lang, String date, String time, String SNo, String pm1, String pm25, String pm10, String no2, String co, String humidity) {
+    public DataModel(String current_Date_time, String lat, String lang, String date, String time, String pm1, String pm25, String pm10, String no2, String co, String humidity,String temperature,String CO2) {
         Current_Date_time = current_Date_time;
         Lat = lat;
         Lang = lang;
         Date = date;
+        this.CO2=CO2;
         this.time = time;
-        this.SNo = SNo;
+        this.temperature = temperature;
         Pm1 = pm1;
         Pm25 = pm25;
         Pm10 = pm10;
@@ -31,9 +37,13 @@ public class DataModel {
         this.humidity = humidity;
     }
 
-    String No2;
-    String Co;
-    String humidity;
+    public String getCO2() {
+        return CO2;
+    }
+
+    public void setCO2(String CO2) {
+        this.CO2 = CO2;
+    }
 
     public String getCurrent_Date_time() {
         return Current_Date_time;
@@ -75,12 +85,12 @@ public class DataModel {
         this.time = time;
     }
 
-    public String getSNo() {
-        return SNo;
+    public String getTemperature() {
+        return temperature;
     }
 
-    public void setSNo(String SNo) {
-        this.SNo = SNo;
+    public void setTemperature(String temperature) {
+        this.temperature = temperature;
     }
 
     public String getPm1() {

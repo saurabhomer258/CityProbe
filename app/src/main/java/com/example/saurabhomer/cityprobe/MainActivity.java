@@ -290,7 +290,63 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     String[] arr_data = tempMsg.split(",");
-                    Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim()));
+                    Toast.makeText(MainActivity.this, "data"+arr_data[9], Toast.LENGTH_SHORT).show();
+                    Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
+// String pm1, String pm25, String pm10, String no2, String co, String humidity,String temperature)
+//                    String AQI_Category=""
+//                    if(Integer.parseInt(arr_data[1]>30))
+//                    {
+//
+//                        if(Integer.parseInt(arr_data[1]>250))
+//                        {
+//                            AQI_Category="Severe";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>120))
+//                        {
+//                            AQI_Category="Very poor";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>91))
+//                        {
+//                            AQI_Category="poor";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>61))
+//                        {
+//                            AQI_Category="Moderately polluted";
+//                        }
+//                        else
+//                        {
+//                            AQI_Category="Satisfactory";
+//                        }
+//                        AQI_Category+=" pm2.5\n";
+//                    }
+//                    //pm 10
+//
+//                    if(Integer.parseInt(arr_data[2]>50))
+//                    {
+//
+//                        if(Integer.parseInt(arr_data[1]>430))
+//                        {
+//                            AQI_Category="Severe";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>351))
+//                        {
+//                            AQI_Category="Very poor";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>201))
+//                        {
+//                            AQI_Category="poor";
+//                        }
+//                        else if(Integer.parseInt(arr_data[1]>101))
+//                        {
+//                            AQI_Category="Moderately polluted";
+//                        }
+//                        else
+//                        {
+//                            AQI_Category="Satisfactory";
+//                        }
+//                        AQI_Category+=" pm10\n";
+//                    }
+
                     msg_box.append(tempMsg);
                     break;
             }
