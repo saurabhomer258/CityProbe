@@ -21,7 +21,7 @@ public class DataModel {
     String humidity;
     String temperature;
 
-    public DataModel(String current_Date_time, String lat, String lang, String date, String time, String pm1, String pm25, String pm10, String no2, String co, String humidity,String temperature,String CO2) {
+    public DataModel(String current_Date_time, String lat, String lang, String date, String time, String pm1, String pm25, String pm10, String no2, String CO2,String co, String humidity,String temperature) {
         Current_Date_time = current_Date_time;
         Lat = lat;
         Lang = lang;

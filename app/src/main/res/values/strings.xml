@@ -7,8 +7,8 @@
     <string name="lol">lol</string>
     <string name="enter_message">enter_message</string>
     <string name="listen">LISTEN</string>
-    <string name="list_devices">LIST DEVICES</string>
+
     <string name="send">SEND</string>
     <string name="status">status</string>
-    <string name="getlocation">getLocation</string>
+    <string name="getlocation">Location</string>
 </resources>

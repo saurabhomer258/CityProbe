@@ -1,88 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/listen"
-        android:layout_width="83dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="148dp"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/getlocation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/listDevices"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="136dp"
-        android:layout_marginRight="136dp"
-        android:layout_marginTop="80dp"
-        android:text="@string/list_devices"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/msg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/graph" />
 
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="368dp"
-        android:layout_height="146dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="82dp"
-        android:background="#000000"
-        app:layout_constraintBottom_toTopOf="@+id/msg"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listDevices" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:layout_marginEnd="172dp"
-        android:layout_marginLeft="173dp"
-        android:layout_marginRight="172dp"
-        android:layout_marginStart="173dp"
-        android:layout_marginTop="160dp"
+
         android:text="@string/status"
         app:layout_constraintBottom_toTopOf="@+id/listView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/listen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/getlocation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/listDevices"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="device List"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Graph"
+            android:id="@+id/graph"
+            android:onClick="btngraph"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="snooze"
+            android:id="@+id/snooze"
+            android:onClick="btnsnooze"
+            />
+
+
+    </LinearLayout>
     <TextView
         android:id="@+id/msg"
         android:layout_width="match_parent"
-        android:layout_height="107dp"
-        android:layout_marginBottom="72dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="70dp"
         android:text="@string/message"
+        android:gravity="bottom"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listView" />
 
-    <Button
-        android:id="@+id/uploadbtn"
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/lineChart"
+        ></com.github.mikephil.charting.charts.LineChart>
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginRight="17dp"
-        android:text="upload"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_height="match_parent"
+        android:id="@+id/massage"/>
 
 
-</android.support.constraint.ConstraintLayout>
+
+
+</LinearLayout>
