@@ -52,6 +52,13 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -114,6 +121,21 @@ public class MainActivity extends AppCompatActivity {
     int flag=0;
     int snooze_count=0;
     int sms_send_time=0;
+    // bunch of location related apis
+    private FusedLocationProviderClient mFusedLocationClient;
+    private SettingsClient mSettingsClient;
+    private LocationRequest mLocationRequest;
+    private LocationSettingsRequest mLocationSettingsRequest;
+    private LocationCallback mLocationCallback;
+    private Location mCurrentLocation;
+    private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+
+    // fastest updates interval - 5 sec
+    // location updates will be received if another app is requesting the locations
+    // than your app can handle
+    private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
+
+    private static final int REQUEST_CHECK_SETTINGS = 100;
     // Write a message to the database
 
     // Write a message to the database
@@ -137,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FirebaseApp.initializeApp(this);
-        database=FirebaseDatabase.getInstance();
-        Ref=database.getReference("Data");
+       // FirebaseApp.initializeApp(this);
+//        database=FirebaseDatabase.getInstance();
+//        Ref=database.getReference("Data");
         Calendar cal = Calendar. getInstance();
         mChart = (LineChart) findViewById(R.id.lineChart);
         // enable description text
@@ -166,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         // add empty data
         mChart.setData(data);
 
-
+        checkPermissions();
         // get the legend (only possible after setting data)
         Legend l = mChart.getLegend();
 
@@ -205,41 +227,27 @@ public class MainActivity extends AppCompatActivity {
         bluetoothAdapter=BluetoothAdapter.getDefaultAdapter();
         upLoadServerUri = "http://rohitekka.000webhostapp.com/test1/UploadToServer.php";
 
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        mSettingsClient = LocationServices.getSettingsClient(this);
+//
+//        mLocationCallback = new LocationCallback() {
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//
+//                mCurrentLocation = locationResult.getLastLocation();
+//                lng = mCurrentLocation.getLongitude();
+//                lat=   mCurrentLocation.getLatitude();
+//                Toast.makeText(MainActivity.this, ""+lat, Toast.LENGTH_SHORT).show();
+//            }
+//        };
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-
-
-
-
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-
-                lng = location.getLongitude();
-                lat=location.getLatitude();
-
-
-
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent=new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-
-            }
-        };
-
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        mLocationSettingsRequest = builder.build();
 
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M) {
@@ -912,5 +920,12 @@ public class MainActivity extends AppCompatActivity {
 
         thread.start();
     }
+    private boolean checkPermissions()
+    {
+        int permissionState = ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        return permissionState == PackageManager.PERMISSION_GRANTED;
+    }
+
 
 }
