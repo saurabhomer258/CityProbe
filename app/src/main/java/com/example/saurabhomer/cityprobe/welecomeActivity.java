@@ -1,5 +1,6 @@
 package com.example.saurabhomer.cityprobe;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -14,19 +15,22 @@ public class welecomeActivity extends AppCompatActivity {
     Button btnsub;
     Animation uptodown,downtoup;
     static int SPLASH_TIME = 4000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welecome);
         new Handler().postDelayed(new Runnable() {
             @Override
-            public void run() {
+            public void run()
+            {
                 //Do any action here. Now we are moving to next page
-                Intent mySuperIntent = new Intent(welecomeActivity.this, MainActivity.class);
+                Intent mySuperIntent = new Intent(welecomeActivity.this, CardMenu.class);
                 startActivity(mySuperIntent);
                 /* This 'finish()' is for exiting the app when back button pressed
-                *  from Home page which is ActivityHome
+                *  from Home page which is Activitywelcome
                 */
+
                 finish();
             }
         }, SPLASH_TIME);

@@ -651,7 +651,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class ClientClass extends Thread{
+    private class ClientClass extends Thread
+    {
         private BluetoothDevice device;
         private BluetoothSocket socket;
         public ClientClass(BluetoothDevice device1){
@@ -679,7 +680,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    private class SendReceive extends Thread{
+    private class SendReceive extends Thread
+    {
         private final BluetoothSocket bluetoothSocket;
         private final InputStream inputStream;
         private final OutputStream outputStream;
