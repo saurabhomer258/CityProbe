@@ -32,7 +32,7 @@ public class Bluetooth_set extends AppCompatActivity {
     static final int STATE_LISTNING = 1;
     static final int STATE_CONNECTING = 2;
     static final int STATE_CONNECTED = 3;
-    Bluetooth_set.SendReceive sendReceive;
+    static BluetoothSocket socket;
     static final int STATE_CONNECTION_FAILED = 4;
     static final int STATE_MESSAGE_RECEIVED = 5;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -72,7 +72,7 @@ public class Bluetooth_set extends AppCompatActivity {
                         strings[index]=device.getName();
                         index++;
                     }
-                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,strings);
+                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,strings);
                     listView.setAdapter(arrayAdapter);
                 }
 
@@ -80,7 +80,7 @@ public class Bluetooth_set extends AppCompatActivity {
     private class ClientClass extends Thread
     {
         private BluetoothDevice device;
-        private BluetoothSocket socket;
+
         public ClientClass(BluetoothDevice device1){
             device=device1;
             try {
@@ -96,8 +96,8 @@ public class Bluetooth_set extends AppCompatActivity {
                 Message message=Message.obtain();
                 message.what=STATE_CONNECTED;
                 handler.sendMessage(message);
-                sendReceive=new Bluetooth_set.SendReceive(socket);
-                sendReceive.start();
+                //sendReceive=new Bluetooth_set.SendReceive(socket);
+                //sendReceive.start();
             } catch (IOException e) {
                 e.printStackTrace();
                 Message message=Message.obtain();
@@ -107,81 +107,9 @@ public class Bluetooth_set extends AppCompatActivity {
         }
 
     }
-    private class SendReceive extends Thread
+
+    Handler handler=new Handler(new Handler.Callback()
     {
-        private final BluetoothSocket bluetoothSocket;
-        private final InputStream inputStream;
-        private final OutputStream outputStream;
-        public SendReceive(BluetoothSocket socket){
-            bluetoothSocket=socket;
-            InputStream tempIn=null;
-            OutputStream tempOut=null;
-            try {
-                tempIn=bluetoothSocket.getInputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                tempOut=bluetoothSocket.getOutputStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            inputStream=tempIn;
-            outputStream=tempOut;
-
-        }
-        public void run(){
-            byte [] buffer=new byte[1024];
-            final byte delimiter = 10;
-            int bytes;
-            int readBufferPosition = 0;
-            while(true){
-                try{
-
-                    int bytesAvailable=inputStream.available();
-
-                    if(bytesAvailable>0){
-                        byte[] packetByte=new byte[bytesAvailable];
-                        inputStream.read(packetByte);
-                        for(int i=0;i<bytesAvailable;i++){
-                            byte b=packetByte[i];
-                            if(b==delimiter){
-                                byte[] encodedBytes = new byte[readBufferPosition];
-                                System.arraycopy(buffer, 0, encodedBytes, 0, encodedBytes.length);
-                                final String data = new String(encodedBytes);
-                                readBufferPosition = 0;
-                                handler.obtainMessage(STATE_MESSAGE_RECEIVED,data).sendToTarget();
-
-
-                            }
-                            else
-                            {
-                                buffer[readBufferPosition++] = b;
-                            }
-                        }
-
-                    }
-
-                    //bytes = inputStream.read(buffer);
-                    //handler.obtainMessage(STATE_MESSAGE_RECEIVED,bytes,-1,buffer).sendToTarget();
-
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-
-            }
-
-        }
-        public void write(byte[] bytes){
-            try{
-                outputStream.write(bytes);
-            } catch (IOException e){
-                e.printStackTrace();
-            }
-
-        }
-    }
-    Handler handler=new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");

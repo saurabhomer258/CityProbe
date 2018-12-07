@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.util.Map;
 
 public class CardMenu extends AppCompatActivity {
-    CardView menu1,menu2,menu3,menu4;
+    CardView menu1,menu2,menu3,menu4,menu5;
     BluetoothAdapter bt=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,7 @@ public class CardMenu extends AppCompatActivity {
         menu2=(CardView) findViewById(R.id.menu2);
         menu3=(CardView) findViewById(R.id.menu3);
         menu4=(CardView) findViewById(R.id.menu4);
+        menu5=(CardView) findViewById(R.id.menu5);
         bt=BluetoothAdapter.getDefaultAdapter();
         if(!bt.isEnabled())
         {
@@ -79,6 +80,15 @@ public class CardMenu extends AppCompatActivity {
 
             }
         });
+        menu5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(CardMenu.this,MainActivity.class);
+                startActivity(i);
+
+            }
+        });
+
 
     }
 }
