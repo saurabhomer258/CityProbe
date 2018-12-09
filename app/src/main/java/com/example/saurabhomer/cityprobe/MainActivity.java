@@ -98,8 +98,9 @@ public class MainActivity extends AppCompatActivity {
     EditText writeMsg;
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevice[] btArray;
+    static BluetoothDevice connectbt;
     File file;
-
+    static BluetoothSocket socket;
     static final int STATE_LISTNING = 1;
     static final int STATE_CONNECTING = 2;
     static final int STATE_CONNECTED = 3;
@@ -159,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-       // FirebaseApp.initializeApp(this);
+        // FirebaseApp.initializeApp(this);
 //        database=FirebaseDatabase.getInstance();
 //        Ref=database.getReference("Data");
         Calendar cal = Calendar. getInstance();
@@ -299,9 +300,9 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                connectbt=btArray[position];
                 ClientClass clientClass=new ClientClass(btArray[position]);
                 clientClass.start();
-
                 status.setText("Connecting");
             }
         });
@@ -363,19 +364,19 @@ public class MainActivity extends AppCompatActivity {
 
                     String[] arr_data = tempMsg.split(",");
                     //Toast.makeText(MainActivity.this, "data"+arr_data[9], Toast.LENGTH_SHORT).show();
-                   // Ref=database.getReference("Data");
-                  // Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
+                    // Ref=database.getReference("Data");
+                    // Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
                     AQI aqi=new AQI();
                     String worning_msg="";
                     // pm10
                     worning_msg+=aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()),0,50,51,100,101,250,251,350,351,430,"PM10");
                     // pm2.5
-                 //   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5")
-                   // worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[5].trim()),0,40,41,80,81,180,181,280,281,400,"NO2");
+                    //   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5")
+                    // worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[5].trim()),0,40,41,80,81,180,181,280,281,400,"NO2");
                     worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[7].trim()),0.0f,1.0f,1.1f,2.0f,2.1f,10.0f,10.0f,17.0f,17.0f,34.0f,"CO");
                     worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[6].trim()),0,40,41,80,81,180,181,280,281,400,"CO2");
                     if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
-                       massage.setText(worning_msg);
+                        massage.setText(worning_msg);
                         //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
                         playTone();
                         if(sms_send_time==120)
@@ -404,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(flag==1){
-                       // Toast.makeText(MainActivity.this, "dj", Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, "dj", Toast.LENGTH_SHORT).show();
                         if(dgas=="pm1")
                         {
                             Log.e("A","pm1");
@@ -491,7 +492,7 @@ public class MainActivity extends AppCompatActivity {
         msg_box=(TextView)findViewById(R.id.msg);
         status=(TextView)findViewById(R.id.status);
         //writeMsg=(EditText)findViewById(R.id.writeMsg);
-      //  upLoad=(Button)findViewById(R.id.uploadbtn);
+        //  upLoad=(Button)findViewById(R.id.uploadbtn);
 
 
 
@@ -654,14 +655,18 @@ public class MainActivity extends AppCompatActivity {
     private class ClientClass extends Thread
     {
         private BluetoothDevice device;
-        private BluetoothSocket socket;
+
         public ClientClass(BluetoothDevice device1){
             device=device1;
+
+
             try {
                 socket=device.createRfcommSocketToServiceRecord(MY_UUID);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
         public void run(){
             try {
@@ -845,7 +850,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    private void addEntry(int a) {
+    private void addEntry(int a)
+    {
 
         LineData data = mChart.getData();
 
@@ -898,7 +904,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    private void feedMultiple() {
+    private void feedMultiple()
+    {
 
         if (thread != null){
             thread.interrupt();

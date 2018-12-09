@@ -14,7 +14,7 @@ public class welecomeActivity extends AppCompatActivity {
     LinearLayout l1,l2;
     Button btnsub;
     Animation uptodown,downtoup;
-    static int SPLASH_TIME = 4000;
+    static int SPLASH_TIME = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
