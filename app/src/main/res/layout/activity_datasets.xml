@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#300de2"
     tools:context="com.example.saurabhomer.cityprobe.Datasets">
     <TextView
         android:layout_width="wrap_content"
@@ -12,10 +13,12 @@
         android:id="@+id/status"
         android:text="@string/status"/>
     <TextView
-        android:id="@+id/msg"
+        android:id="@+id/data_msg"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="match_parent"
         android:text="@string/message"
+        android:textSize="10sp"
+        android:textColor="#FFF"
         android:gravity="bottom" />
 
 

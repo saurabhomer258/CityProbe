@@ -43,19 +43,19 @@ public class Datasets extends AppCompatActivity {
     static final int STATE_CONNECTION_FAILED = 4;
     static final int STATE_MESSAGE_RECEIVED = 5;
     int sms_send_time = 0;
-    TextView massage;
+    TextView data_msg;
     private boolean plotData = true;
     String dgas = null;
-    private TextView msg_box,status;
+    private TextView status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_datasets);
-        massage = (TextView) findViewById(R.id.massage);
-        msg_box = (TextView) findViewById(R.id.msg);
+
+        data_msg = (TextView) findViewById(R.id.data_msg);
         status = (TextView) findViewById(R.id.status);
-        msg_box.setMovementMethod(new ScrollingMovementMethod());
+        data_msg.setMovementMethod(new ScrollingMovementMethod());
 
         Datasets.ClientClass clientClass = new Datasets.ClientClass(MainActivity.connectbt);
         clientClass.start();
@@ -102,102 +102,96 @@ public class Datasets extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    String[] arr_data = tempMsg.split(",");
-                    //Toast.makeText(MainActivity.this, "data"+arr_data[9], Toast.LENGTH_SHORT).show();
-                    // Ref=database.getReference("Data");
-                    // Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
 
+                    String[] arr_data = tempMsg.split(",");
+                    String dispaly_data=data_msg.getText().toString()+"\n"+tempMsg;
+
+                    data_msg.setText(dispaly_data);
 
 
 
                     AQI aqi=new AQI();
                     String worning_msg="";
-                    // pm10
+
                     worning_msg+=aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()),0,50,51,100,101,250,251,350,351,430,"PM10");
-                    // pm2.5
-                    //   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5")
-                    // worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[5].trim()),0,40,41,80,81,180,181,280,281,400,"NO2");
+
                     worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[7].trim()),0.0f,1.0f,1.1f,2.0f,2.1f,10.0f,10.0f,17.0f,17.0f,34.0f,"CO");
                     worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[6].trim()),0,40,41,80,81,180,181,280,281,400,"CO2");
-                    if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
-                        massage.setText(worning_msg);
-                        //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
-                       // playTone();
-                        if(sms_send_time==120)
-                        {
-                            //SmsManager smsManager = SmsManager.getDefault();
-                            //smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
-                          //  sms_send_time=0;
-
-                        }
-                        else
-                        {
-                            sms_send_time++;
-
-                        }
-
-                    }
-                    if(worning_msg=="" || worning_msg==null)
-                    {
-                        massage.setText("");
-
-                    }
-                    if(snooze_count!=0)
-                    {
-                        snooze_count--;
-                    }
-
-
-                    if(flag==1){
-                        // Toast.makeText(MainActivity.this, "dj", Toast.LENGTH_SHORT).show();
-                        if(dgas=="pm1")
-                        {
-                            Log.e("A","pm1");
-
-                            //Toast.makeText(MainActivity.this, "pm1", Toast.LENGTH_SHORT).show();
-                         //   addEntry(Integer.parseInt(arr_data[2].trim()));
-                        }
-                        else if(dgas=="pm25")
-                        {
-                            Log.e("A","pm25");
-
-
-                           // addEntry(Integer.parseInt(arr_data[3].trim()));
-                        }
-                        else if(dgas=="pm10")
-                        {
-                            Log.e("A","pm10");
-
-                          //  addEntry(Integer.parseInt(arr_data[4].trim()));
-
-                        }
-                        else if(dgas=="no2")
-                        {
-                            Log.e("A","no2");
-
-//                            addEntry(Integer.parseInt(arr_data[5].trim()));
-
-                        }
-                        else if(dgas=="co")
-                        {
-                            Log.e("A","co");
-
-
-                          //  addEntry(Integer.parseInt(arr_data[7].trim()));
-                        }
-                        else if(dgas=="co2")
-                        {
-                            Log.e("A","co2");
-
-
-                          //  addEntry(Integer.parseInt(arr_data[6].trim()));
-                        }
-                        plotData = false;
-                    }
-
-                    msg_box.append(tempMsg);
-                    break;
-            }
+//                    if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
+//                        massage.setText(worning_msg);
+//                        //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
+//                       // playTone();
+//                        if(sms_send_time==120)
+//                        {
+//                            //SmsManager smsManager = SmsManager.getDefault();
+//                            //smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
+//                          //  sms_send_time=0;
+//
+//                        }
+//                        else
+//                        {
+//                            sms_send_time++;
+//
+//                        }
+//
+//                    }
+//                    if(worning_msg=="" || worning_msg==null)
+//                    {
+//                        massage.setText("");
+//
+//                    }
+//                    if(snooze_count!=0)
+//                    {
+//                        snooze_count--;
+//                    }
+//
+//
+//                    if(flag==1){
+//
+//                        if(dgas=="pm1")
+//                        {
+//                            Log.e("A","pm1");
+//
+//
+//                        }
+//                        else if(dgas=="pm25")
+//                        {
+//                            Log.e("A","pm25");
+//
+//
+//
+//                        }
+//                        else if(dgas=="pm10")
+//                        {
+//                            Log.e("A","pm10");
+//
+//
+//
+//                        }
+//                        else if(dgas=="no2")
+//                        {
+//                            Log.e("A","no2");
+//
+////
+//
+//                        }
+//                        else if(dgas=="co")
+//                        {
+//                            Log.e("A","co");
+//
+//
+//                        }
+//                        else if(dgas=="co2")
+//                        {
+//                            Log.e("A","co2");
+//
+//                        }
+//                        plotData = false;
+//                    }
+//
+//                    msg_box.append(tempMsg);
+//                    break;
+               }
             return true;
         }
     });
@@ -297,6 +291,7 @@ public class Datasets extends AppCompatActivity {
                                 System.arraycopy(buffer, 0, encodedBytes, 0, encodedBytes.length);
                                 final String data = new String(encodedBytes);
                                 readBufferPosition = 0;
+
                                 handler.obtainMessage(STATE_MESSAGE_RECEIVED, data).sendToTarget();
 
 
