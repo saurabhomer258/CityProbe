@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +39,8 @@ public class Bluetooth_set extends AppCompatActivity {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     BluetoothDevice[] btArray;
     TextView status;
+    static BluetoothDevice connectbt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,7 @@ public class Bluetooth_set extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                connectbt=btArray[position];
                 Bluetooth_set.ClientClass clientClass = new Bluetooth_set.ClientClass(btArray[position]);
                 clientClass.start();
 
@@ -96,8 +100,7 @@ public class Bluetooth_set extends AppCompatActivity {
                 Message message=Message.obtain();
                 message.what=STATE_CONNECTED;
                 handler.sendMessage(message);
-                //sendReceive=new Bluetooth_set.SendReceive(socket);
-                //sendReceive.start();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 Message message=Message.obtain();

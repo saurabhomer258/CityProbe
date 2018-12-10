@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context="com.example.saurabhomer.cityprobe.Graphset">
     <TextView
-        android:id="@+id/status"
+        android:id="@+id/status_graph"
         android:text="@string/status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

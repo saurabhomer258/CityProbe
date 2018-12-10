@@ -27,7 +27,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTED;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTING;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTION_FAILED;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_LISTNING;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_MESSAGE_RECEIVED;
 import static com.example.saurabhomer.cityprobe.MainActivity.connectbt;
+import static com.example.saurabhomer.cityprobe.CardMenu.flag_datasets;
 
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class Datasets extends AppCompatActivity {
@@ -35,17 +41,15 @@ public class Datasets extends AppCompatActivity {
     Datasets.SendReceive sendReceive;
     static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     File file;
-    int flag = 0;
+
     int snooze_count = 0;
-    static final int STATE_LISTNING = 1;
-    static final int STATE_CONNECTING = 2;
-    static final int STATE_CONNECTED = 3;
-    static final int STATE_CONNECTION_FAILED = 4;
-    static final int STATE_MESSAGE_RECEIVED = 5;
+
     int sms_send_time = 0;
     TextView data_msg;
     private boolean plotData = true;
     String dgas = null;
+
+    boolean cond=true;
     private TextView status;
 
     @Override
@@ -57,7 +61,7 @@ public class Datasets extends AppCompatActivity {
         status = (TextView) findViewById(R.id.status);
         data_msg.setMovementMethod(new ScrollingMovementMethod());
 
-        Datasets.ClientClass clientClass = new Datasets.ClientClass(MainActivity.connectbt);
+        Datasets.ClientClass clientClass = new Datasets.ClientClass(Bluetooth_set.connectbt);
         clientClass.start();
     }
     Handler handler=new Handler(new Handler.Callback() {
@@ -80,7 +84,6 @@ public class Datasets extends AppCompatActivity {
                     status.setText("Connection_Failed");
                     break;
                 case STATE_MESSAGE_RECEIVED:
-
                     String readBuffr=(String)msg.obj;
 
                     String tempMsg = readBuffr;
@@ -112,11 +115,12 @@ public class Datasets extends AppCompatActivity {
 
                     AQI aqi=new AQI();
                     String worning_msg="";
+                    if(arr_data.length>7)
+                    {
+                        worning_msg += aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()), 0, 50, 51, 100, 101, 250, 251, 350, 351, 430, "PM10");
 
-                    worning_msg+=aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()),0,50,51,100,101,250,251,350,351,430,"PM10");
-
-                    worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[7].trim()),0.0f,1.0f,1.1f,2.0f,2.1f,10.0f,10.0f,17.0f,17.0f,34.0f,"CO");
-                    worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[6].trim()),0,40,41,80,81,180,181,280,281,400,"CO2");
+                        worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[7].trim()), 0.0f, 1.0f, 1.1f, 2.0f, 2.1f, 10.0f, 10.0f, 17.0f, 17.0f, 34.0f, "CO");
+                        worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[6].trim()), 0, 40, 41, 80, 81, 180, 181, 280, 281, 400, "CO2");
 //                    if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
 //                        massage.setText(worning_msg);
 //                        //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
@@ -191,6 +195,7 @@ public class Datasets extends AppCompatActivity {
 //
 //                    msg_box.append(tempMsg);
 //                    break;
+                    }
                }
             return true;
         }
@@ -276,7 +281,8 @@ public class Datasets extends AppCompatActivity {
             final byte delimiter = 10;
             int bytes;
             int readBufferPosition = 0;
-            while (true) {
+            while (cond) {
+
                 try {
 
                     int bytesAvailable = inputStream.available();
@@ -295,7 +301,8 @@ public class Datasets extends AppCompatActivity {
                                 handler.obtainMessage(STATE_MESSAGE_RECEIVED, data).sendToTarget();
 
 
-                            } else {
+                            } else
+                                {
                                 buffer[readBufferPosition++] = b;
                             }
                         }
@@ -313,4 +320,12 @@ public class Datasets extends AppCompatActivity {
 
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        cond=false;
+
+    }
+
+
 }

@@ -15,6 +15,7 @@ import java.util.Map;
 public class CardMenu extends AppCompatActivity {
     CardView menu1,menu2,menu3,menu4,menu5;
     BluetoothAdapter bt=null;
+    static int flag_datasets=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,5 +91,13 @@ public class CardMenu extends AppCompatActivity {
         });
 
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        int flag_datasets=0;
+        Toast.makeText(this, ""+ flag_datasets, Toast.LENGTH_SHORT).show();
     }
 }

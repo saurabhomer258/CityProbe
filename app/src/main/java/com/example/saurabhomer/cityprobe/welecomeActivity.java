@@ -16,6 +16,7 @@ public class welecomeActivity extends AppCompatActivity {
     Animation uptodown,downtoup;
     static int SPLASH_TIME = 1000;
 
+    static Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,4 +36,5 @@ public class welecomeActivity extends AppCompatActivity {
             }
         }, SPLASH_TIME);
     }
+
 }

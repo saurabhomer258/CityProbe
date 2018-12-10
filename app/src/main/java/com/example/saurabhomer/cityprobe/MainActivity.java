@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog dialog = null;
     int flag=0;
     int snooze_count=0;
+
+
     int sms_send_time=0;
     // bunch of location related apis
     private FusedLocationProviderClient mFusedLocationClient;

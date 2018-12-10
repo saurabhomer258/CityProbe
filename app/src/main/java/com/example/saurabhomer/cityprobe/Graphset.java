@@ -33,7 +33,13 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import static com.example.saurabhomer.cityprobe.MainActivity.connectbt;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTED;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTING;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_CONNECTION_FAILED;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_LISTNING;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.STATE_MESSAGE_RECEIVED;
+import static com.example.saurabhomer.cityprobe.Bluetooth_set.connectbt;
+
 
 public class Graphset extends AppCompatActivity {
     BluetoothSocket socket;
@@ -44,11 +50,7 @@ public class Graphset extends AppCompatActivity {
     int flag = 0;
     String mydate;
     int snooze_count = 0;
-    static final int STATE_LISTNING = 1;
-    static final int STATE_CONNECTING = 2;
-    static final int STATE_CONNECTED = 3;
-    static final int STATE_CONNECTION_FAILED = 4;
-    static final int STATE_MESSAGE_RECEIVED = 5;
+
     int sms_send_time = 0;
     TextView massage;
     private boolean plotData = true;
@@ -56,7 +58,7 @@ public class Graphset extends AppCompatActivity {
     private TextView msg_box,status;
     LineChart mChart;
     Button btn1,btn2,btn3,btn4,btn5,btn6;
-
+    boolean con=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class Graphset extends AppCompatActivity {
          btn4 = (Button) findViewById(R.id.no2);
          btn5 = (Button) findViewById(R.id.co);
          btn6 = (Button) findViewById(R.id.co2);
+        status=(TextView) findViewById(R.id.status_graph);
         button();
         flag=1;
         // enable description text
@@ -132,7 +135,7 @@ public class Graphset extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             String currentDate = sdf.format(new Date());
             String filename=currentDate;
-            switch (msg.what){
+            switch (msg.what) {
                 case STATE_LISTNING:
                     status.setText("Listning");
                     break;
@@ -147,24 +150,22 @@ public class Graphset extends AppCompatActivity {
                     break;
                 case STATE_MESSAGE_RECEIVED:
                     //byte[] readBuff= (byte[]) msg.obj;
-                    String readBuffr=(String)msg.obj;
+                    String readBuffr = (String) msg.obj;
                     //int bytes=msg.arg1;
                     String tempMsg = readBuffr;
 
-                    String path = Environment.getExternalStorageDirectory()+"/BluetoothApp/";
+                    String path = Environment.getExternalStorageDirectory() + "/BluetoothApp/";
                     file = new File(path);
                     if (!file.exists()) {
                         file.mkdirs();
                     }
                     RandomAccessFile raf;
-                    try{
-                        raf=new RandomAccessFile(file+"/Filename.txt","rw");
+                    try {
+                        raf = new RandomAccessFile(file + "/Filename.txt", "rw");
                         raf.seek(raf.length());
                         raf.write(tempMsg.getBytes());
                         raf.close();
-                    }
-                    catch(Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
@@ -172,93 +173,79 @@ public class Graphset extends AppCompatActivity {
                     //Toast.makeText(MainActivity.this, "data"+arr_data[9], Toast.LENGTH_SHORT).show();
                     // Ref=database.getReference("Data");
                     // Ref.push().setValue(new DataModel(mydate,String.valueOf(lat),String.valueOf(lng).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
-                    AQI aqi=new AQI();
-                    String worning_msg="";
-                    // pm10
-                    worning_msg+=aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()),0,50,51,100,101,250,251,350,351,430,"PM10");
-                    // pm2.5
-                    //   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5")
-                    // worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[5].trim()),0,40,41,80,81,180,181,280,281,400,"NO2");
-                    worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[7].trim()),0.0f,1.0f,1.1f,2.0f,2.1f,10.0f,10.0f,17.0f,17.0f,34.0f,"CO");
-                    worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[6].trim()),0,40,41,80,81,180,181,280,281,400,"CO2");
-                    if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
-                        massage.setText(worning_msg);
-                        //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
-                      //  playTone();
-                        if(sms_send_time==120)
-                        {
-                        //    SmsManager smsManager = SmsManager.getDefault();
-                          //  smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
-                           // sms_send_time=0;
+                    AQI aqi = new AQI();
+                    String worning_msg = "";
+                    if (arr_data.length > 7) {
+                        // pm10
+                        worning_msg += aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()), 0, 50, 51, 100, 101, 250, 251, 350, 351, 430, "PM10");
+                        // pm2.5
+                        //   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5")
+                        // worning_msg+=aqi.aqiTest(Float.parseFloat(arr_data[5].trim()),0,40,41,80,81,180,181,280,281,400,"NO2");
+                        worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[7].trim()), 0.0f, 1.0f, 1.1f, 2.0f, 2.1f, 10.0f, 10.0f, 17.0f, 17.0f, 34.0f, "CO");
+                        worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[6].trim()), 0, 40, 41, 80, 81, 180, 181, 280, 281, 400, "CO2");
+                        if (worning_msg.trim() != null && worning_msg.trim() != "" && snooze_count == 0) {
+                            //massage.setText(worning_msg);
+                            //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
+                            //  playTone();
+                            if (sms_send_time == 120) {
+                                //    SmsManager smsManager = SmsManager.getDefault();
+                                //  smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
+                                // sms_send_time=0;
+
+                            } else {
+                                sms_send_time++;
+
+                            }
 
                         }
-                        else
-                        {
-                            sms_send_time++;
+                        if (worning_msg == "" || worning_msg == null) {
+                           // massage.setText("");
 
                         }
+                        if (snooze_count != 0) {
+                            snooze_count--;
+                        }
+
+
+                        if (flag == 1) {
+                            // Toast.makeText(MainActivity.this, "dj", Toast.LENGTH_SHORT).show();
+                            if (dgas == "pm1") {
+                                Log.e("A", "pm1");
+
+                                //Toast.makeText(MainActivity.this, "pm1", Toast.LENGTH_SHORT).show();
+                                addEntry(Integer.parseInt(arr_data[2].trim()));
+                            } else if (dgas == "pm25") {
+                                Log.e("A", "pm25");
+
+
+                                addEntry(Integer.parseInt(arr_data[3].trim()));
+                            } else if (dgas == "pm10") {
+                                Log.e("A", "pm10");
+
+                                addEntry(Integer.parseInt(arr_data[4].trim()));
+
+                            } else if (dgas == "no2") {
+                                Log.e("A", "no2");
+
+                                addEntry(Integer.parseInt(arr_data[5].trim()));
+
+                            } else if (dgas == "co") {
+                                Log.e("A", "co");
+
+
+                                addEntry(Integer.parseInt(arr_data[7].trim()));
+                            } else if (dgas == "co2") {
+                                Log.e("A", "co2");
+
+
+                                addEntry(Integer.parseInt(arr_data[6].trim()));
+                            }
+                            plotData = false;
+                        }
+
+//                        msg_box.append(tempMsg);
 
                     }
-                    if(worning_msg=="" || worning_msg==null)
-                    {
-                        massage.setText("");
-
-                    }
-                    if(snooze_count!=0)
-                    {
-                        snooze_count--;
-                    }
-
-
-                    if(flag==1){
-                        // Toast.makeText(MainActivity.this, "dj", Toast.LENGTH_SHORT).show();
-                        if(dgas=="pm1")
-                        {
-                            Log.e("A","pm1");
-
-                            //Toast.makeText(MainActivity.this, "pm1", Toast.LENGTH_SHORT).show();
-                            addEntry(Integer.parseInt(arr_data[2].trim()));
-                        }
-                        else if(dgas=="pm25")
-                        {
-                            Log.e("A","pm25");
-
-
-                            addEntry(Integer.parseInt(arr_data[3].trim()));
-                        }
-                        else if(dgas=="pm10")
-                        {
-                            Log.e("A","pm10");
-
-                            addEntry(Integer.parseInt(arr_data[4].trim()));
-
-                        }
-                        else if(dgas=="no2")
-                        {
-                            Log.e("A","no2");
-
-                            addEntry(Integer.parseInt(arr_data[5].trim()));
-
-                        }
-                        else if(dgas=="co")
-                        {
-                            Log.e("A","co");
-
-
-                            addEntry(Integer.parseInt(arr_data[7].trim()));
-                        }
-                        else if(dgas=="co2")
-                        {
-                            Log.e("A","co2");
-
-
-                            addEntry(Integer.parseInt(arr_data[6].trim()));
-                        }
-                        plotData = false;
-                    }
-
-                    msg_box.append(tempMsg);
-                    break;
             }
             return true;
         }
@@ -294,27 +281,20 @@ public class Graphset extends AppCompatActivity {
         private BluetoothSocket socket;
         public ClientClass(BluetoothDevice device1){
             device=device1;
-            try {
-                socket=device.createRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            socket = Bluetooth_set.socket;
         }
         public void run(){
-            try {
 
-                socket.connect();
+
+
                 Message message=Message.obtain();
                 message.what=STATE_CONNECTED;
                 handler.sendMessage(message);
                 sendReceive=new Graphset.SendReceive(socket);
                 sendReceive.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Message message=Message.obtain();
-                message.what=STATE_CONNECTION_FAILED;
-                handler.sendMessage(message);
-            }
+
+
+
         }
     }
     private class SendReceive extends Thread
@@ -346,7 +326,7 @@ public class Graphset extends AppCompatActivity {
             final byte delimiter = 10;
             int bytes;
             int readBufferPosition = 0;
-            while(true){
+            while(con){
                 try{
 
                     int bytesAvailable=inputStream.available();
@@ -438,6 +418,7 @@ public class Graphset extends AppCompatActivity {
     }
     void button()
     {
+        flag=1;
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -521,5 +502,11 @@ public class Graphset extends AppCompatActivity {
                 
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        con=false;
     }
 }
