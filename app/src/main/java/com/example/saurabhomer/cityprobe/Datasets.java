@@ -41,11 +41,11 @@ public class Datasets extends AppCompatActivity {
     Datasets.SendReceive sendReceive;
     static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     File file;
-
+    private static ToneGenerator toneGenerator;
     int snooze_count = 0;
 
     int sms_send_time = 0;
-    TextView data_msg;
+    TextView data_msg,alertmsg;
     private boolean plotData = true;
     String dgas = null;
 
@@ -58,6 +58,7 @@ public class Datasets extends AppCompatActivity {
         setContentView(R.layout.activity_datasets);
 
         data_msg = (TextView) findViewById(R.id.data_msg);
+        alertmsg = (TextView) findViewById(R.id.alertmsg);
         status = (TextView) findViewById(R.id.status);
         data_msg.setMovementMethod(new ScrollingMovementMethod());
 
@@ -115,41 +116,34 @@ public class Datasets extends AppCompatActivity {
 
                     AQI aqi=new AQI();
                     String worning_msg="";
-                    if(arr_data.length>7)
-                    {
+                    if(arr_data.length>7) {
                         worning_msg += aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()), 0, 50, 51, 100, 101, 250, 251, 350, 351, 430, "PM10");
 
                         worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[7].trim()), 0.0f, 1.0f, 1.1f, 2.0f, 2.1f, 10.0f, 10.0f, 17.0f, 17.0f, 34.0f, "CO");
                         worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[6].trim()), 0, 40, 41, 80, 81, 180, 181, 280, 281, 400, "CO2");
-//                    if(worning_msg.trim()!=null && worning_msg.trim()!="" && snooze_count==0) {
-//                        massage.setText(worning_msg);
+                        if (worning_msg.trim() != null && worning_msg.trim() != "" && snooze_count == 0) {
+                            alertmsg.setText(worning_msg);
 //                        //Toast.makeText(MainActivity.this, "" + worning_msg, Toast.LENGTH_SHORT).show();
-//                       // playTone();
-//                        if(sms_send_time==120)
-//                        {
-//                            //SmsManager smsManager = SmsManager.getDefault();
-//                            //smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
-//                          //  sms_send_time=0;
+                            playTone();
+                            if (sms_send_time == 120) {
+                                //SmsManager smsManager = SmsManager.getDefault();
+                                //smsManager.sendTextMessage("+919434789009", null, "alert sms:"+worning_msg, null, null);
+                                //  sms_send_time=0;
+
+                            } else {
+                                sms_send_time++;
+
+                            }
 //
-//                        }
-//                        else
-//                        {
-//                            sms_send_time++;
-//
-//                        }
-//
-//                    }
-//                    if(worning_msg=="" || worning_msg==null)
-//                    {
-//                        massage.setText("");
-//
-//                    }
-//                    if(snooze_count!=0)
-//                    {
-//                        snooze_count--;
-//                    }
-//
-//
+                            if (worning_msg == "" || worning_msg == null) {
+                                alertmsg.setText("");
+
+                            }
+                            if (snooze_count != 0) {
+                                snooze_count--;
+                            }
+
+
 //                    if(flag==1){
 //
 //                        if(dgas=="pm1")
@@ -195,37 +189,38 @@ public class Datasets extends AppCompatActivity {
 //
 //                    msg_box.append(tempMsg);
 //                    break;
+                        }
                     }
                }
             return true;
         }
     });
 
-//    private static void playTone( ) {
-//
-//        try {
-//
-//            if (toneGenerator == null) {
-//                toneGenerator = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
-//            }
-//            toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 900);
-//
-//            Handler handler = new Handler(Looper.getMainLooper());
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (toneGenerator != null) {
-//                        //Log.d(TAG, "ToneGenerator released");
-//                        toneGenerator.release();
-//                        toneGenerator = null;
-//                    }
-//                }
-//
-//            }, 900);
-//        } catch (Exception e) {
-//            Log.d("ex", "Exception while playing sound:" + e);
-//        }
-//    }
+     void playTone( ) {
+
+        try {
+
+            if (toneGenerator == null) {
+                toneGenerator = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100);
+            }
+            toneGenerator.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 900);
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (toneGenerator != null) {
+                        //Log.d(TAG, "ToneGenerator released");
+                        toneGenerator.release();
+                        toneGenerator = null;
+                    }
+                }
+
+            }, 900);
+        } catch (Exception e) {
+            Log.d("ex", "Exception while playing sound:" + e);
+        }
+    }
 
     private class ClientClass extends Thread {
        BluetoothDevice device;
