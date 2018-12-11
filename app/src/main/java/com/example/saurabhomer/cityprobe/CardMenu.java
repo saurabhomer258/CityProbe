@@ -4,6 +4,10 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +22,7 @@ public class CardMenu extends AppCompatActivity {
     BluetoothAdapter bt=null;
     static int flag_datasets=0;
     static BluetoothSocket socket=null;
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +32,15 @@ public class CardMenu extends AppCompatActivity {
         menu3=(CardView) findViewById(R.id.menu3);
         menu4=(CardView) findViewById(R.id.menu4);
         menu5=(CardView) findViewById(R.id.menu5);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                    android.Manifest.permission.INTERNET, android.Manifest.permission.BLUETOOTH,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE,
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.SEND_SMS
+            },10);
+        }
+
         bt=BluetoothAdapter.getDefaultAdapter();
         //Toast.makeText(this, ""+socket, Toast.LENGTH_SHORT).show();
         if(!bt.isEnabled())
