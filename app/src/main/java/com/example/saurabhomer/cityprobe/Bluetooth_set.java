@@ -33,7 +33,7 @@ public class Bluetooth_set extends AppCompatActivity {
     static final int STATE_LISTNING = 1;
     static final int STATE_CONNECTING = 2;
     static final int STATE_CONNECTED = 3;
-    static BluetoothSocket socket;
+    BluetoothSocket socket;
     static final int STATE_CONNECTION_FAILED = 4;
     static final int STATE_MESSAGE_RECEIVED = 5;
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
@@ -76,7 +76,7 @@ public class Bluetooth_set extends AppCompatActivity {
                         strings[index]=device.getName();
                         index++;
                     }
-                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_dropdown_item_1line,strings);
+                    ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_single_choice,strings);
                     listView.setAdapter(arrayAdapter);
                 }
 
@@ -89,6 +89,7 @@ public class Bluetooth_set extends AppCompatActivity {
             device=device1;
             try {
                 socket=device.createRfcommSocketToServiceRecord(MY_UUID);
+                CardMenu.socket=socket;
             } catch (IOException e) {
                 e.printStackTrace();
             }

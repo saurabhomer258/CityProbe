@@ -15,8 +15,13 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +29,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -43,6 +49,8 @@ public class Datasets extends AppCompatActivity {
     File file;
     private static ToneGenerator toneGenerator;
     int snooze_count = 0;
+    FirebaseDatabase database;
+    DatabaseReference Ref;
 
     int sms_send_time = 0;
     TextView data_msg,alertmsg;
@@ -61,9 +69,13 @@ public class Datasets extends AppCompatActivity {
         alertmsg = (TextView) findViewById(R.id.alertmsg);
         status = (TextView) findViewById(R.id.status);
         data_msg.setMovementMethod(new ScrollingMovementMethod());
+         FirebaseApp.initializeApp(this);
+        database=FirebaseDatabase.getInstance();
+        Ref=database.getReference("Data");
 
         Datasets.ClientClass clientClass = new Datasets.ClientClass(Bluetooth_set.connectbt);
         clientClass.start();
+
     }
     Handler handler=new Handler(new Handler.Callback() {
         @Override
@@ -116,9 +128,10 @@ public class Datasets extends AppCompatActivity {
 
                     AQI aqi=new AQI();
                     String worning_msg="";
-                    if(arr_data.length>7) {
+                    if(arr_data.length>9) {
+                        Ref.push().setValue(new DataModel(java.text.DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime()),String.valueOf(0.00),String.valueOf(0.00).trim(),arr_data[0].trim(),arr_data[1].trim(),arr_data[2].trim(),arr_data[3].trim(),arr_data[4].trim(),arr_data[5].trim(),arr_data[6].trim(),arr_data[7].trim(),arr_data[8].trim(),arr_data[9].trim()));
                         worning_msg += aqi.aqiTest((float) Double.parseDouble(arr_data[4].trim()), 0, 50, 51, 100, 101, 250, 251, 350, 351, 430, "PM10");
-
+                        worning_msg +=   aqi.aqiTest(Float.parseFloat(arr_data[3].trim()),0,30,31,60,61,90,91,120,121,250,"PM2.5");
                         worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[7].trim()), 0.0f, 1.0f, 1.1f, 2.0f, 2.1f, 10.0f, 10.0f, 17.0f, 17.0f, 34.0f, "CO");
                         worning_msg += aqi.aqiTest(Float.parseFloat(arr_data[6].trim()), 0, 40, 41, 80, 81, 180, 181, 280, 281, 400, "CO2");
                         if (worning_msg.trim() != null && worning_msg.trim() != "" && snooze_count == 0) {
@@ -229,7 +242,7 @@ public class Datasets extends AppCompatActivity {
         public ClientClass(BluetoothDevice device1) {
             device = device1;
 
-                socket = Bluetooth_set.socket;
+                socket = CardMenu.socket;
 
         }
 
@@ -239,12 +252,14 @@ public class Datasets extends AppCompatActivity {
                 Message message = Message.obtain();
                 message.what = STATE_CONNECTED;
                 handler.sendMessage(message);
-               sendReceive = new Datasets.SendReceive(Bluetooth_set.socket);
+               sendReceive = new Datasets.SendReceive(CardMenu.socket);
                 sendReceive.start();
 
         }
     }
-
+    public void btnsnooze(View view) {
+        snooze_count=60;
+    }
     private class SendReceive extends Thread {
         private final BluetoothSocket bluetoothSocket;
         InputStream inputStream;

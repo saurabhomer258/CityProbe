@@ -12,6 +12,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/status"
         android:text="@string/status"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="snooze"
+        android:id="@+id/snooze"
+        android:onClick="btnsnooze"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +32,7 @@
         android:layout_height="match_parent"
         android:text="@string/message"
         android:fontFamily="casual"
-        android:textSize="15sp"
+        android:textSize="13sp"
         android:textColor="#FFF"
         android:gravity="bottom" />
 

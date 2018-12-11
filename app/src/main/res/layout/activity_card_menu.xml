@@ -7,26 +7,9 @@
     android:orientation="vertical"
     android:background="@color/main_color"
     android:weightSum="10"
-    android:layout_gravity="center"
-    android:gravity="center"
-    
+   android:padding="20sp"
     >
 
-    <RelativeLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
-
-        <TextView
-            android:id="@+id/textGrid"
-            android:text="GRID LAYOUT"
-            android:textSize="34sp"
-            android:textColor="#000"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </RelativeLayout>
 
   
         <!-- ROW 1  -->
@@ -36,7 +19,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+
         android:background="@color/main_color"
         android:orientation="horizontal">
 
@@ -44,9 +27,10 @@
         <android.support.v7.widget.CardView
             android:id="@+id/menu4"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
+
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_rowWeight="1"
@@ -54,17 +38,19 @@
             app:cardElevation="8dp">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="120dp"
-
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="3dp"
-                android:orientation="horizontal">
+
+                android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/splash" />
+                    android:src="@drawable/blueetooth_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,10 +58,11 @@
                     android:layout_gravity="center"
                     android:fontFamily="casual"
                     android:text="Connection"
+                    android:layout_marginTop="7dp"
 
                     android:textAlignment="center"
                     android:textColor="@color/grid_text"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/card_text_size"
 
                     android:textStyle="bold" />
 
@@ -88,7 +75,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/menu1"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
@@ -99,30 +86,34 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="130dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="3dp"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/splash" />
+
+                    android:src="@drawable/line_graph" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+
                     android:fontFamily="casual"
+                    android:layout_gravity="center"
+                    android:textColor="@color/grid_text"
+                    android:textSize="@dimen/card_text_size"
+                    android:textStyle="bold"
 
                     android:text="Graph"
+                    android:layout_marginTop="7dp"
 
                     android:textAlignment="center"
-                    android:textColor="@color/grid_text"
-                    android:textSize="12sp"
 
-                    android:textStyle="bold"
 
                     />
 
@@ -142,9 +133,10 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.CardView
+
             android:id="@+id/menu2"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
@@ -155,24 +147,28 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="3dp"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/splash" />
+                    android:src="@drawable/maps" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="MAP"
+                    android:layout_marginTop="7dp"
+                    android:fontFamily="casual"
                     android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="18sp"
+                    android:layout_gravity="center"
+                    android:textColor="@color/grid_text"
+                    android:textSize="@dimen/card_text_size"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -184,7 +180,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/menu3"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
@@ -195,24 +191,28 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="3dp"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/splash" />
+                    android:src="@drawable/data" />
 
                 <TextView
+                    android:layout_marginTop="7dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="Data"
                     android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="18sp"
+                    android:textColor="@color/grid_text"
+                    android:textSize="@dimen/card_text_size"
+                    android:fontFamily="casual"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -234,7 +234,7 @@
         <android.support.v7.widget.CardView
             android:id="@+id/menu5"
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="110dp"
             android:layout_columnWeight="1"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
@@ -244,25 +244,29 @@
             app:cardElevation="8dp">
 
             <LinearLayout
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal|center_vertical"
                 android:layout_margin="3dp"
                 android:orientation="vertical">
 
                 <ImageView
+                    android:layout_marginTop="15dp"
                     android:layout_width="@dimen/image_width"
                     android:layout_height="@dimen/image_height"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/splash" />
+                    android:src="@drawable/docs" />
 
                 <TextView
+                    android:layout_marginTop="7dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Try old version"
                     android:textAlignment="center"
-                    android:textColor="#000"
-                    android:textSize="12sp"
+                    android:textColor="@color/grid_text"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/card_text_size"
+                    android:fontFamily="casual"
                     android:textStyle="bold" />
 
             </LinearLayout>

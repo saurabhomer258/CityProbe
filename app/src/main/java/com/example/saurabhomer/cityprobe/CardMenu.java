@@ -1,6 +1,7 @@
 package com.example.saurabhomer.cityprobe;
 
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -16,6 +17,7 @@ public class CardMenu extends AppCompatActivity {
     CardView menu1,menu2,menu3,menu4,menu5;
     BluetoothAdapter bt=null;
     static int flag_datasets=0;
+    static BluetoothSocket socket=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,7 @@ public class CardMenu extends AppCompatActivity {
         menu4=(CardView) findViewById(R.id.menu4);
         menu5=(CardView) findViewById(R.id.menu5);
         bt=BluetoothAdapter.getDefaultAdapter();
+        //Toast.makeText(this, ""+socket, Toast.LENGTH_SHORT).show();
         if(!bt.isEnabled())
         {
             /*****first method to enable bluetooth*****/
@@ -53,13 +56,21 @@ public class CardMenu extends AppCompatActivity {
         menu1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(CardMenu.this,Graphset.class);
-                startActivity(i);
+                if(socket!=null)
+                {
+                    Intent i = new Intent(CardMenu.this, Graphset.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(CardMenu.this, "No device found", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         menu2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent i=new Intent(CardMenu.this,Mapset.class);
                 startActivity(i);
 
@@ -68,8 +79,14 @@ public class CardMenu extends AppCompatActivity {
         menu3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(CardMenu.this,Datasets.class);
-                startActivity(i);
+                if(socket!=null) {
+                    Intent i = new Intent(CardMenu.this, Datasets.class);
+                    startActivity(i);
+                }
+                else
+                {
+                    Toast.makeText(CardMenu.this, "No device found", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -97,7 +114,8 @@ public class CardMenu extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+       // Toast.makeText(this, ""+socket, Toast.LENGTH_SHORT).show();
         int flag_datasets=0;
-        Toast.makeText(this, ""+ flag_datasets, Toast.LENGTH_SHORT).show();
+
     }
 }

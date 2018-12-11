@@ -11,10 +11,10 @@
     <uses-permission
         android:name="android.permission.WRITE_SECURE_SETTINGS"
         tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-
 
     <application
         android:allowBackup="false"
@@ -24,8 +24,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:node="replace">
-        <meta-data android:name="com.google.android.gms.version"
+        <meta-data
+            android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <activity android:name=".MainActivity" />
         <activity android:name=".welecomeActivity">
             <intent-filter>
@@ -39,6 +41,9 @@
         <activity android:name=".Mapset" />
         <activity android:name=".Graphset" />
         <activity android:name=".Datasets" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCqOYsIWVbf0w9TGDlqb_oD5pux4UJSRXk"/>
     </application>
 
 </manifest>

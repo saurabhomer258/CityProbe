@@ -57,7 +57,7 @@ public class Mapset extends AppCompatActivity {
     IMapController mapController;
     // location last updated time
     private String mLastUpdateTime;
-
+    Marker marker;
     // location updates interval - 10sec
     private static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
 
@@ -67,7 +67,7 @@ public class Mapset extends AppCompatActivity {
     private static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS = 5000;
 
     private static final int REQUEST_CHECK_SETTINGS = 100;
-
+    GeoPoint startPoint;
 
     // bunch of location related apis
     private FusedLocationProviderClient mFusedLocationClient;
@@ -96,11 +96,18 @@ public class Mapset extends AppCompatActivity {
         map.setMultiTouchControls(true);
         mapController = map.getController();
         mapController.setZoom(15);
-        Marker marker=new Marker(map);
+        marker=new Marker(map);
 
         
-        GeoPoint startPoint = new GeoPoint(23.548512, 87.2894873);
+        startPoint = new GeoPoint(23.548512, 87.2894873);
         mapController.setCenter(startPoint);
+
+        marker.setPosition(startPoint);
+        //startMarker.setIcon(getResources().getDrawable(android.R.drawable.));
+
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+        map.getOverlays().add(marker);
+
 
         init();
 
@@ -134,7 +141,13 @@ public class Mapset extends AppCompatActivity {
 
     private void updateLocationUI() {
         if (mCurrentLocation != null) {
-            Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+            map.getOverlays().clear();
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            map.getOverlays().add(marker);
+
+            marker.setPosition(new GeoPoint(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()));
+
+           // Toast.makeText(this, mCurrentLocation.getLatitude() + " " + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -151,7 +164,8 @@ public class Mapset extends AppCompatActivity {
                 // location is received
                 mCurrentLocation = locationResult.getLastLocation();
                 mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-                Toast.makeText(Mapset.this, "" + mCurrentLocation.getLatitude() + "" + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+               //
+                // Toast.makeText(Mapset.this, "" + mCurrentLocation.getLatitude() + "" + mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
 
                 //  tv1.setText("" + mCurrentLocation.getLatitude() + "" + mCurrentLocation.getLongitude());
             }

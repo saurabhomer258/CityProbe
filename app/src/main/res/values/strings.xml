@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CityProbe</string>
+    <string name="app_name">ENV</string>
     <string name="button">Button</string>
     <string name="name">Name</string>
     <string name="textview">TextView</string>

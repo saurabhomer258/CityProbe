@@ -214,7 +214,7 @@ public class Graphset extends AppCompatActivity {
 
                                 //Toast.makeText(MainActivity.this, "pm1", Toast.LENGTH_SHORT).show();
                                 addEntry(Integer.parseInt(arr_data[2].trim()));
-                            } else if (dgas == "pm25") {
+                            } else if (dgas == "pm2.5") {
                                 Log.e("A", "pm25");
 
 
@@ -281,7 +281,7 @@ public class Graphset extends AppCompatActivity {
         private BluetoothSocket socket;
         public ClientClass(BluetoothDevice device1){
             device=device1;
-            socket = Bluetooth_set.socket;
+            socket = CardMenu.socket;
         }
         public void run(){
 
@@ -436,19 +436,19 @@ public class Graphset extends AppCompatActivity {
             }
         });
         btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dgas="pm2.5";
-                mChart.clear();
-                mChart = (LineChart) findViewById(R.id.lineChart);
-                LineData data = new LineData();
-                data.setValueTextColor(Color.WHITE);
+        @Override
+        public void onClick(View v) {
+            dgas="pm2.5";
+            mChart.clear();
+            mChart = (LineChart) findViewById(R.id.lineChart);
+            LineData data = new LineData();
+            data.setValueTextColor(Color.WHITE);
 
-                // add empty data
-                mChart.setData(data);
+            // add empty data
+            mChart.setData(data);
 
-            }
-        });
+        }
+    });
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
